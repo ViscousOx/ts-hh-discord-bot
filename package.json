@@ -1,18 +1,20 @@
 {
   "name": "reaction-role-discord-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "main": "build/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "build:changelog": "npx @discordx/changelog --root=src",
+    "dev": "node --loader ts-node/esm/transpile-only src/main.ts",
+    "serve": "node build/main.js",
+    "start": "nodemon --exec node --experimental-modules --es-module-specifier-resolution=node --loader ts-node/esm/transpile-only src/main.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
-    "@discordjs/rest": "^0.4.1",
-    "discord-api-types": "^0.32.1",
+    "@discordx/importer": "^1.1.9",
+    "discord-api-types": "^0.30.0",
     "discord.js": "^13.7.0",
     "discordx": "^9.6.0",
     "dotenv": "^16.0.1",
@@ -20,6 +22,13 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.33",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.6.2",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   }
 }
