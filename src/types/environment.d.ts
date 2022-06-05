@@ -7,6 +7,7 @@ declare global {
       clientId: string;
       guildId: string;
       reactionRoleChannel: string;
+      botWorkerId: string;
     }
   }
 }

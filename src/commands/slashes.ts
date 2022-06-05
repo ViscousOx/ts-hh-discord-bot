@@ -1,16 +1,23 @@
-import { CommandInteraction, MessageEmbed } from "discord.js";
-import { Discord, Slash } from "discordx";
+import { CommandInteraction, MessageEmbed, TextChannel } from "discord.js";
+import { Discord, Slash, Permission, SlashOption } from "discordx";
 import { Emojis } from "../constants/emojis";
+import { Roles } from "../constants/roles";
+import { fixRawChannelId } from "../util/cleaning";
 
 @Discord()
 export class Example {
-  @Slash()
-  ping(interaction: CommandInteraction): void {
-    interaction.reply("pong!");
-  }
-
+  // TODO: fix this bc currently setting permissions in GUI
+  @Permission(false)
+  @Permission({ id: Roles.botWorker, type: "ROLE", permission: true })
   @Slash("hh-day", { description: "Send embeded message for voting on HH day" })
-  hhDay(interaction: CommandInteraction): void {
+  hhDay(
+    @SlashOption("channel", {
+      description: "what channel should the message be posted in",
+    })
+    rawChannelId: string,
+    interaction: CommandInteraction
+  ): void {
+    let channelId = fixRawChannelId(rawChannelId);
     let embed = new MessageEmbed()
       .setColor("#e42643")
       .setTitle("What day should we meet up?")
@@ -19,13 +26,31 @@ export class Example {
           `${Emojis.hamster} for thursday\n` +
           `${Emojis.bear} for friday`
       );
-    interaction.channel?.send({ embeds: [embed] });
+    let targetChannel: TextChannel | undefined =
+      interaction.guild?.channels.cache.get(channelId) as TextChannel;
+    if (targetChannel) {
+      targetChannel.send({ embeds: [embed] });
+      interaction.reply("sent");
+    } else {
+      console.log(interaction.guild?.channels.cache);
+      console.log(channelId);
+      interaction.reply(
+        "FAIL: target channel either wasn't provided or couldn't be found"
+      );
+    }
   }
 
   @Slash("hh-place", {
     description: "Send embeded message for voting on HH location",
   })
-  hhPlace(interaction: CommandInteraction): void {
+  hhPlace(
+    @SlashOption("channel", {
+      description: "what channel should the message be posted in",
+    })
+    rawChannelId: string,
+    interaction: CommandInteraction
+  ): void {
+    let channelId = fixRawChannelId(rawChannelId);
     let embed = new MessageEmbed()
       .setColor("#e42643")
       .setTitle("Where should we meet up?")
@@ -43,6 +68,17 @@ export class Example {
           `${Emojis.taco} for Sonora Mexican Kitchen & Bar\n` +
           `${Emojis.bowling} for Bryant Lake Bowl & Theater`
       );
-    interaction.channel?.send({ embeds: [embed] });
+    let targetChannel: TextChannel | undefined =
+      interaction.guild?.channels.cache.get(channelId) as TextChannel;
+    if (targetChannel) {
+      targetChannel.send({ embeds: [embed] });
+      interaction.reply("sent");
+    } else {
+      console.log(interaction.guild?.channels.cache);
+      console.log(channelId);
+      interaction.reply(
+        "FAIL: target channel either wasn't provided or couldn't be found"
+      );
+    }
   }
 }
