@@ -1,10 +1,10 @@
-import type { ArgsOf } from "discordx";
-import { Discord, On, Client } from "discordx";
+import type { ArgsOf, Client } from "discordx";
+import { Discord, On } from "discordx";
 
 @Discord()
-export abstract class AppDiscord {
+export class Example {
   @On("messageDelete")
-  onMessage([message]: ArgsOf<"messageDelete">, client: Client) {
+  onMessage([message]: ArgsOf<"messageDelete">, client: Client): void {
     console.log("Message Deleted", client.user?.username, message.content);
   }
 }

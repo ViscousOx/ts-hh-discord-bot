@@ -1,0 +1,17 @@
+export const Emojis: { [char: string]: string } = {
+  yellow_square: "🟨",
+  blue_square: "🟦",
+  hamster: "🐹",
+  bear: "🐻",
+  marg: "🍹",
+  bowling: "🎳",
+  pho: "🍜",
+  dice: "🎲",
+  pita: "🥙",
+  taco: "🌮",
+  beer: "🍺",
+  clink: "🍻",
+  highball: "🥃",
+  wine: "🍷",
+  bond: "🍸",
+};
