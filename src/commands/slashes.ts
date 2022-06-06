@@ -55,7 +55,7 @@ export class Example {
       .setColor("#e42643")
       .setTitle("Where should we meet up?")
       .setDescription(
-        "React with the below options to vote for which location you want! (voting for multiple days is allowed!)\n\n" +
+        "React with the below options to vote for which location you want! (voting for multiple locations is allowed!)\n\n" +
           `${Emojis.beer} for LynLake Brewery\n` +
           `${Emojis.clink} for Morrissey's Pub\n` +
           `${Emojis.marg} for Lago Tacos\n` +
