@@ -1,1 +1,1 @@
-app: docker compose up --build
+web: docker compose up --build
