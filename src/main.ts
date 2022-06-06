@@ -53,14 +53,14 @@ bot.on("messageCreate", (message: Message) => {
 async function run() {
   // The following syntax should be used in the commonjs environment
   //
-  // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
+  await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
 
   // The following syntax should be used in the ECMAScript environment
-  await importx(dirname(import.meta.url) + "/{events,commands}/**/*.{ts,js}");
+  // await importx(dirname(import.meta.url) + "/{events,commands}/**/*.{ts,js}");
 
   // Let's start the bot
   if (!process.env.token) {
-    throw Error("Could not find BOT_TOKEN in your environment");
+    throw Error("Could not find token in your environment");
   }
 
   // Log in with your bot token
