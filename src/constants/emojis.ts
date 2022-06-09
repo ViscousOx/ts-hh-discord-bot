@@ -14,4 +14,8 @@ export const Emojis: { [char: string]: string } = {
   highball: "🥃",
   wine: "🍷",
   bond: "🍸",
+  five: "🕔",
+  five_thirty: "🕠",
+  six: "🕕",
+  six_thirty: "🕡",
 };
