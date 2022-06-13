@@ -1,4 +1,9 @@
-import { CommandInteraction, MessageEmbed, TextChannel } from "discord.js";
+import {
+  CommandInteraction,
+  Emoji,
+  MessageEmbed,
+  TextChannel,
+} from "discord.js";
 import { Discord, Slash, Permission, SlashOption } from "discordx";
 import { Emojis } from "../constants/emojis";
 import { Roles } from "../constants/roles";
@@ -10,13 +15,13 @@ export class Example {
   @Permission(false)
   @Permission({ id: Roles.botWorker, type: "ROLE", permission: true })
   @Slash("hh-day", { description: "Send embeded message for voting on HH day" })
-  hhDay(
+  async hhDay(
     @SlashOption("channel", {
       description: "what channel should the message be posted in",
     })
     rawChannelId: string,
     interaction: CommandInteraction
-  ): void {
+  ): Promise<void> {
     let channelId = fixRawChannelId(rawChannelId);
     let embed = new MessageEmbed()
       .setColor("#e42643")
@@ -30,7 +35,9 @@ export class Example {
     let targetChannel: TextChannel | undefined =
       interaction.guild?.channels.cache.get(channelId) as TextChannel;
     if (targetChannel) {
-      targetChannel.send({ embeds: [embed] });
+      let message = await targetChannel.send({ embeds: [embed] });
+      message.react(Emojis.hamster);
+      message.react(Emojis.bear);
       interaction.reply("sent");
     } else {
       console.log(interaction.guild?.channels.cache);
@@ -44,13 +51,13 @@ export class Example {
   @Slash("hh-place", {
     description: "Send embeded message for voting on HH location",
   })
-  hhPlace(
+  async hhPlace(
     @SlashOption("channel", {
       description: "what channel should the message be posted in",
     })
     rawChannelId: string,
     interaction: CommandInteraction
-  ): void {
+  ): Promise<void> {
     let channelId = fixRawChannelId(rawChannelId);
     let embed = new MessageEmbed()
       .setColor("#e42643")
@@ -73,7 +80,18 @@ export class Example {
     let targetChannel: TextChannel | undefined =
       interaction.guild?.channels.cache.get(channelId) as TextChannel;
     if (targetChannel) {
-      targetChannel.send({ embeds: [embed] });
+      let message = await targetChannel.send({ embeds: [embed] });
+      message.react(Emojis.beer);
+      message.react(Emojis.clink);
+      message.react(Emojis.marg);
+      message.react(Emojis.pita);
+      message.react(Emojis.dice);
+      message.react(Emojis.highball);
+      message.react(Emojis.bond);
+      message.react(Emojis.wine);
+      message.react(Emojis.pho);
+      message.react(Emojis.taco);
+      message.react(Emojis.bowling);
       interaction.reply("sent");
     } else {
       console.log(interaction.guild?.channels.cache);
@@ -87,13 +105,13 @@ export class Example {
   @Slash("hh-time", {
     description: "Send embeded message for voting on HH time",
   })
-  hhTime(
+  async hhTime(
     @SlashOption("channel", {
       description: "what channel should the message be posted in",
     })
     rawChannelId: string,
     interaction: CommandInteraction
-  ): void {
+  ): Promise<void> {
     let channelId = fixRawChannelId(rawChannelId);
     let embed = new MessageEmbed()
       .setColor("#e42643")
@@ -109,7 +127,11 @@ export class Example {
     let targetChannel: TextChannel | undefined =
       interaction.guild?.channels.cache.get(channelId) as TextChannel;
     if (targetChannel) {
-      targetChannel.send({ embeds: [embed] });
+      let message = await targetChannel.send({ embeds: [embed] });
+      message.react(Emojis.five);
+      message.react(Emojis.five_thirty);
+      message.react(Emojis.six);
+      message.react(Emojis.six_thirty);
       interaction.reply("sent");
     } else {
       console.log(interaction.guild?.channels.cache);
