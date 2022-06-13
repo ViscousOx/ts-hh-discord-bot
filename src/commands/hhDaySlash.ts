@@ -2,7 +2,6 @@ import {
   ButtonInteraction,
   CommandInteraction,
   MessageActionRow,
-  MessageButton,
   MessageEmbed,
   TextChannel,
 } from "discord.js";
@@ -16,9 +15,29 @@ import {
 import { Emojis } from "../constants/emojis";
 import { Roles } from "../constants/roles";
 import { fixRawChannelId } from "../util/cleaning";
+import {
+  createButtons,
+  createButtonsArgs,
+  getMessage,
+} from "../util/messageHelper";
 
 @Discord()
 export class HHDaySlash {
+  private buttons: createButtonsArgs[] = [
+    {
+      label: "thursday",
+      emoji: Emojis.hamster,
+      style: "PRIMARY",
+      id: "thur-btn",
+    },
+    {
+      label: "friday",
+      emoji: Emojis.bear,
+      style: "PRIMARY",
+      id: "fri-btn",
+    },
+  ];
+
   // TODO: fix this bc currently setting permissions in GUI
   @Permission(false)
   @Permission({ id: Roles.botWorker, type: "ROLE", permission: true })
@@ -35,26 +54,16 @@ export class HHDaySlash {
       .setColor("#e42643")
       .setTitle("What day should we meet up?")
       .setDescription(
-        "React with the below options to vote for which day works best for you! (voting for multiple days is allowed!) \n" +
-          "If you would like to add an option that is not here please create a thread with an emoji mapping! \n\n" +
-          `${Emojis.hamster} for thursday\n` +
-          `${Emojis.bear} for friday`
+        "React with the below buttons to vote for which day works best for you! (voting for multiple days is allowed!) \n" +
+          "If you would like to add an option that is not here please create a thread with an emoji mapping! \n\n"
       );
     let targetChannel: TextChannel | undefined =
       interaction.guild?.channels.cache.get(channelId) as TextChannel;
 
-    // Create the button, giving it the id: "hello-btn"
-    const helloBtn = new MessageButton()
-      .setLabel("Hello")
-      .setEmoji("👋")
-      .setStyle("PRIMARY")
-      .setCustomId("hello-btn");
-
-    // Create a MessageActionRow and add the button to that row.
-    const row = new MessageActionRow().addComponents(helloBtn);
+    const row: MessageActionRow[] = createButtons(this.buttons);
 
     if (targetChannel) {
-      targetChannel.send({ embeds: [embed], components: [row] });
+      targetChannel.send({ embeds: [embed], components: row });
       interaction.reply("sent");
     } else {
       console.log(interaction.guild?.channels.cache);
@@ -65,13 +74,17 @@ export class HHDaySlash {
     }
   }
 
-  // register a handler for the button with id: "hello-btn"
-  @ButtonComponent("hello-btn")
-  async myBtn(interaction: ButtonInteraction) {
-    let message = await interaction.channel?.messages.fetch(
-      interaction.message.id
-    );
+  @ButtonComponent("thur-btn")
+  async thurBtn(interaction: ButtonInteraction) {
+    let message = await getMessage(interaction);
     message?.react(Emojis.hamster);
-    interaction.reply("something");
+    await interaction.deferUpdate();
+  }
+
+  @ButtonComponent("fri-btn")
+  async friBtn(interaction: ButtonInteraction) {
+    let message = await getMessage(interaction);
+    message?.react(Emojis.bear);
+    await interaction.deferUpdate();
   }
 }
